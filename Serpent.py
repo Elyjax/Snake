@@ -29,15 +29,19 @@ class Serpent:
             fenetre.blit(self.image, (corps.x, corps.y))
 
     def changerDirection(self, direction):
-        # On verifie que direction prend une valeur correcte et que
-        # la direction n'est pas dans le sens oppose de la direction actuelle
-        if direction in ("droite", "gauche", "bas", "haut"):
-            if direction == "haut" and self.direction == "bas":
-                return
-            if direction == "droite" and self.direction == "gauche":
-                return
-            if direction == "bas" and self.direction == "haut":
-                return
-            if direction == "gauche" and self.direction == "droite":
-                return
-            self.direction = direction
+        # Si la nouvelle direction est egal a l'actuelle, on quitte
+        if direction == self.direction:
+            return False
+        # Si la nouvelle direction est dans le sens oppose de l'actuelle
+        # on quitte afin que le snake ne se rentre pas dedans
+        if direction == "haut" and self.direction == "bas":
+            return False
+        if direction == "droite" and self.direction == "gauche":
+            return False
+        if direction == "bas" and self.direction == "haut":
+            return False
+        if direction == "gauche" and self.direction == "droite":
+            return False
+        # Sinon on change la direction et on renvoit vrai
+        self.direction = direction
+        return True

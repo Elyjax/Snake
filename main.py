@@ -32,10 +32,13 @@ while ouvert:
             # Ferme aussi l'application quand on appui sur ESC
             if event.key == K_ESCAPE:
                 ouvert = False
-            if event.key in (K_UP, K_RIGHT, K_DOWN, K_LEFT):
-                serpent.changerDirection(table[event.key])
-                serpent.miseAJour()
-                compteur = 0
+            # Teste si la touche est une fleche
+            toucheFleche = (K_UP, K_RIGHT, K_DOWN, K_LEFT)
+            if event.key in toucheFleche:
+                # Teste si le changement c'est bien effectue
+                if serpent.changerDirection(table[event.key]):
+                    serpent.miseAJour()
+                    compteur = 0
             # L'appui sur une touche fleche change la direction du serpent et
             # lance automatique une mise a jour
 
