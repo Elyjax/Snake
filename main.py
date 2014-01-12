@@ -10,10 +10,11 @@ fenetre = pygame.display.set_mode((tailleCase * nombreCasesLargeur,
                                    tailleCase * nombreCasesHauteur))
 # Creation de l'objet de type Serpent
 serpent = Serpent(0, 0)
+compteur = 0
 clock = pygame.time.Clock()
 ouvert = True
 while ouvert:
-    for event in pygame.event.get():
+    for event in pygame.event.get():  # Gestion des evenements
         # Ferme l'application quand on clique sur la croix
         if event.type == QUIT:
             ouvert = False
@@ -27,9 +28,19 @@ while ouvert:
                 serpent.changerDirection("bas")
             if event.key == K_LEFT:
                 serpent.changerDirection("gauche")
-    pygame.time.delay(100)
-    clock.tick()
-    print(clock.get_fps())
-    serpent.miseAJour()
+            # L'appui sur une touche lance automatique une mise a jour
+            # afin d'eviter que certaine commande ne soit pas prise en
+            # compte car une autre touche a ete pressee avant le cycle
+            # de mise a jour
+            serpent.miseAJour()
+            temps = 0
+    # On ajoute le temps ecoule depuis la derniere misea jour a un compteur
+    # On met a jour le serpent si compteur > delaisMiseAJour
+    # Plus delaisMiseAJour est grand plus le serpent sera lent
+    compteur += clock.tick()
+    if compteur >= delaisMiseAJour:
+        serpent.miseAJour()
+        compteur = 0
+    fenetre.fill((0, 0, 0))  # On efface l'ecran
     serpent.afficher(fenetre)
-    pygame.display.flip()
+    pygame.display.flip()  # On actualise l'ecran
