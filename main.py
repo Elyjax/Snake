@@ -29,9 +29,16 @@ table[K_UP] = "haut"
 table[K_RIGHT] = "droite"
 table[K_DOWN] = "bas"
 table[K_LEFT] = "gauche"
-fichierScore = open("score.txt", "r")
-meilleurScore = fichierScore.read()
-fichierScore.close()
+meilleurScore = 0
+try:
+    fichierScore = open("score.txt", "r")
+    meilleurScore = fichierScore.read()
+    fichierScore.close()
+except IOError: # Si le fichier n'exsite pas, on le cree
+    fichierScore = open("score.txt", "w")
+    fichierScore.write("0")
+    fichierScore.close()
+
 scoreActuel = 0
 compteur = 0
 clock = pygame.time.Clock()
