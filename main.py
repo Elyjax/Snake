@@ -33,6 +33,17 @@ table[K_UP] = "haut"
 table[K_RIGHT] = "droite"
 table[K_DOWN] = "bas"
 table[K_LEFT] = "gauche"
+meilleurScore = 0
+try:
+    fichierScore = open("score.txt", "r")
+    meilleurScore = fichierScore.read()
+    fichierScore.close()
+except IOError: # Si le fichier n'exsite pas, on le cree
+    fichierScore = open("score.txt", "w")
+    fichierScore.write("0")
+    fichierScore.close()
+
+scoreActuel = 0
 compteur = 0
 clock = pygame.time.Clock()
 ouvert = True
@@ -75,10 +86,20 @@ while ouvert:
 
     # Affichage des serpents
     serpent.afficher(fenetre)
-    
-    # Affichage du texte
-    fenetre.blit(font.render("Score : " + str(len(serpent.positionsCorps) - 1),
-                             1, (255, 255, 255)), (0, 0)) 
+
+    # Mise a jour des scores
+    scoreActuel = str(len(serpent.positionsCorps) - 1)
+    if scoreActuel > meilleurScore:
+        meilleurScore = scoreActuel
+        fichierScore = open("score.txt", "w")
+        fichierScore.write(str(meilleurScore))
+        fichierScore.close()
+            
+    # Affichage des scores
+    fenetre.blit(font.render("Score : " + str(scoreActuel), 1,
+                             (255, 255, 255)), (0, 0))
+    fenetre.blit(font.render("Meilleur score : " + str(meilleurScore), 1,
+                             (255, 255, 255)), (0, 16))
     
     pygame.display.flip()  # On actualise l'ecran
 
