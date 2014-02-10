@@ -6,6 +6,7 @@ from pygame.locals import *  # Quelques constantes utiles (K_UP, K_RIGHT...)
 from Serpent import *
 from Fruit import *
 from constantes import *
+from Musique import *
 
 pygame.init()
 # Ouvre une fenetre de tailleCase * nombreCasesLargeur
@@ -17,6 +18,9 @@ serpent = Serpent(0, 0)
 # Creation de l'objet de type fruits
 fruits = list()
 fruits.append(Fruit(serpent))
+#Creation de l'objet de type Musique
+musique = Musique()
+musique.MoteurMusique()
 
 # Creation police de caractere pour texte potentiel
 pygame.font.init()
