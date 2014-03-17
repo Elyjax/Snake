@@ -8,11 +8,20 @@ class Musique:
         filename = "Fond.wav"
         if not os.path.exists(filename):
             raise IOError("File '%s' not found!"%filename)
-        self.background = pygame.mixer.Sound(filename)
-        self.canalBackground = pygame.mixer.Channel(1)
+        self.musique = pygame.mixer.Sound(filename)
+        self.canal = pygame.mixer.Channel(1)
+        self.canal.set_volume(10.0)
         
     def MoteurMusique(self):
-        self.canalBackground.set_volume(10.0)
-        self.canalBackground.play(self.background, -1, 0, 0)
+        self.canal.play(self.musique, -1, 0, 0)
+
+    def Pause(self):
+        if self.canal.get_busy():
+            self.canal.Pause()
+        else:
+            self.canal.Unpause()
+
+    def Stop(self):
+        self.canal.stop()
         
 

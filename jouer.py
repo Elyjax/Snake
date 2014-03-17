@@ -44,10 +44,12 @@ def jouer(fenetre):
 		for event in pygame.event.get(): # Gestion des evenements
 			# Ferme l'application quand on clique sur la croix
 			if event.type == QUIT:
+                                musique.Stop()
 				ouvert = False
 			if event.type == KEYDOWN:
 				# Ferme aussi l'application quand on appui sur ESC
 				if event.key == K_ESCAPE:
+                                        musique.Stop()
 					ouvert = False
 				# Teste si la touche est une fleche
 				toucheFleche = (K_UP, K_RIGHT, K_DOWN, K_LEFT)
@@ -69,6 +71,7 @@ def jouer(fenetre):
 
 		# Si le serpent rencontre un bord du niveau ou se rentre dedans, on quitte
 		if serpent.testCollision():
+                        musique.Stop()
 			break
 		# Affichage
 		fenetre.fill((0, 0, 0))  # On efface l'ecran
