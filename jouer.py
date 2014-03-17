@@ -12,7 +12,8 @@ def jouer(fenetre):
 	#Creation de l'objet de type Musique
 	musique = Musique()
 	musique.MoteurMusique()
-
+	# Chargement de l'image de fond
+	fond = pygame.image.load("Images/Fond.png").convert()
 	# Creation police de caractere pour texte potentiel
 	pygame.font.init()
 	font = pygame.font.SysFont("default", 30)
@@ -73,8 +74,13 @@ def jouer(fenetre):
 		if serpent.testCollision():
                         musique.Stop()
 			break
-		# Affichage
-		fenetre.fill((0, 0, 0))  # On efface l'ecran
+		# On efface l'ecran
+		fenetre.fill((0, 0, 0))
+
+		# On affiche le fond
+		for i in range(0, nombreCasesLargeur):
+			for j in range(0, nombreCasesHauteur):
+				fenetre.blit(fond, (i * tailleCase, j * tailleCase))
 
 		# Affichage des fruits
 		for fruit in fruits:
@@ -97,5 +103,5 @@ def jouer(fenetre):
 		fenetre.blit(font.render("Meilleur score : " + str(meilleurScore), 1,
 								 (255, 255, 255)), (0, 16))
 
-		pygame.display.flip()  # On actualise l'ecran
-
+		# On actualise l'ecran
+		pygame.display.flip()
