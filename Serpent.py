@@ -6,10 +6,10 @@ from Fruit import *
 class Serpent:
     def __init__(self, x, y):
         # Charge l'image du corps du serpent et la convertie dans le bon format
-        self.imageCorps = pygame.image.load("Corps.png").convert()
+        self.imageCorps = pygame.image.load("Images/Corps.png").convert_alpha()
         # Charge l'image de la tete du serpent
         # Celle ci contient les quatres positions possibles de la tete
-        self.imageTete = pygame.image.load("Tete.png").convert()
+        self.imageTete = pygame.image.load("Images/Tetes.png").convert_alpha()
         self.positionTete = Position(x, y)
         self.positionsCorps = list()
         self.positionsCorps.append(Position(-16,-16))
@@ -43,9 +43,10 @@ class Serpent:
         surfaceAfficher = (pos * tailleCase, 0, tailleCase, tailleCase)
         fenetre.blit(self.imageTete, (self.positionTete.x, self.positionTete.y)
                      , surfaceAfficher)
+
+        # Affichage de chaque element du corps
         for corps in self.positionsCorps:
-            # Affichage de chaque element du corps
-            fenetre.blit(self.imageCorps, (corps.x, corps.y))
+            fenetre.blit(self.imageCorps, (corps.x, corps.y), (0, 0, 64, 64))
 
     def changerDirection(self, direction):
         # Si la nouvelle direction est egal a l'actuelle, on quitte

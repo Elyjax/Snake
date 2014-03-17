@@ -1,5 +1,5 @@
 # Regroupe ici toutes les constantes utilisees
-tailleCase = 16
+tailleCase = 64
 nombreCasesLargeur = 20
-nombreCasesHauteur = 20
-delaisMiseAJour = 100
+nombreCasesHauteur = 10
+delaisMiseAJour = 200
