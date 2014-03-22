@@ -71,20 +71,20 @@ class Serpent:
             if self.positionTete.x == corps.x and \
                self.positionTete.y == corps.y:
                 return True
-            if self.positionTete.x >= nombreCasesLargeur * tailleCase:
+            if self.positionTete.x >= (nombreCasesLargeur - tailleBord) * tailleCase:
                 return True
-            if self.positionTete.y >= nombreCasesHauteur * tailleCase:
+            if self.positionTete.y >= (nombreCasesHauteur - tailleBord) * tailleCase:
                 return True
-            if self.positionTete.x < 0:
+            if self.positionTete.x < tailleBord * tailleCase:
                 return True
-            if self.positionTete.y < 0:
+            if self.positionTete.y < tailleBord * tailleCase:
                 return True
         return False
 
     def testManger(self, fruits):
         for index, fruit in enumerate(fruits):
             if self.positionTete.x == fruit.positionFruit.x and \
-               self.positionTete.y == fruit.positionFruit.y: 
+               self.positionTete.y == fruit.positionFruit.y:
                 fruits.pop(index)
                 fruits.append(Fruit(self))
                 self.positionsCorps.append(Position(self.positionsCorps[-1].x,self.positionsCorps[-1].y))

@@ -5,7 +5,7 @@ from Musique import *
 
 def jouer(fenetre):
     # Creation de l'objet de type Serpent
-        serpent = Serpent(0, 0)
+        serpent = Serpent(64, 64)
         # Creation de l'objet de type fruits
         fruits = list()
         fruits.append(Fruit(serpent))
@@ -79,8 +79,8 @@ def jouer(fenetre):
             fenetre.fill((0, 0, 0))
 
             # On affiche le fond
-            for i in range(0, nombreCasesLargeur):
-                for j in range(0, nombreCasesHauteur):
+            for i in range(tailleBord, nombreCasesLargeur - tailleBord):
+                for j in range(tailleBord, nombreCasesHauteur - tailleBord):
                     fenetre.blit(fond, (i * tailleCase, j * tailleCase))
 
             # Affichage des fruits
