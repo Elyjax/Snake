@@ -12,9 +12,12 @@ pygame.init()
 fenetre = pygame.display.set_mode((tailleCase * nombreCasesLargeur,
     tailleCase * nombreCasesHauteur))
 
-font = pygame.font.SysFont("default", 40)
+font1 = pygame.font.SysFont("default", 40)
+font2 = pygame.font.SysFont("default", 60)
+
 selectionActuelle = 1
 ouvert = True
+
 while ouvert:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -28,23 +31,40 @@ while ouvert:
             if event.key == K_UP:
                 selectionActuelle -= 1
                 if selectionActuelle < 1:
-                    selectionActuelle = 2
+                    selectionActuelle = 1
             if event.key == K_DOWN:
                 selectionActuelle += 1
                 if selectionActuelle > 2:
-                    selectionActuelle = 1
+                    selectionActuelle = 2
 
-    couleurJouer = (0, 255, 0)  # Couleur verte
-    couleurQuitter = (0, 255, 0)
+    couleurJouer = (100, 100, 100)  # Couleur grise
+    couleurQuitter = (100, 100, 100)
     if selectionActuelle == 1:
         couleurJouer = (255, 0, 0)  # Couleur rouge
     if selectionActuelle == 2:
         couleurQuitter = (255, 0, 0)
 
     fenetre.fill((0, 0, 0))  # On efface l'ecran
+
     # On affiche le menu
-    fenetre.blit(font.render("Jouer", 1, couleurJouer), (100, 50))
-    fenetre.blit(font.render("Quitter", 1, couleurQuitter), (100, 100))
+    if selectionActuelle == 1:
+        text = font2.render("Jouer", 1, couleurJouer)
+    else:
+        text = font1.render("Jouer", 1, couleurJouer)
+    position = text.get_rect()
+    position.centerx = fenetre.get_rect().centerx
+    position.centery = fenetre.get_rect().bottom * 0.25
+    fenetre.blit(text, position)
+
+    if selectionActuelle == 2:
+        text = font2.render("Quitter", 1, couleurQuitter)
+    else:
+        text = font1.render("Quitter", 1, couleurQuitter)
+    position = text.get_rect()
+    position.centerx = fenetre.get_rect().centerx
+    position.centery = fenetre.get_rect().bottom * 0.75
+    fenetre.blit(text, position)
+
     pygame.display.flip()
 
 pygame.quit()
