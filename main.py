@@ -15,7 +15,11 @@ fenetre = pygame.display.set_mode((tailleCase * nombreCasesLargeur,
 font1 = pygame.font.SysFont("default", 40)
 font2 = pygame.font.SysFont("default", 60)
 
+couleurRouge = (255, 0, 0)
+couleurGrise = (100, 100, 100)
 selectionActuelle = 1
+menu = ["Jouer", "Options", "Quitter"]
+nbMenu = len(menu)
 ouvert = True
 
 while ouvert:
@@ -24,46 +28,32 @@ while ouvert:
             ouvert = False
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
-                if selectionActuelle == 1:
+                if menu[selectionActuelle] == "Jouer":
                     jouer(fenetre)
-                if selectionActuelle == 2:
+                if menu[selectionActuelle] == "Quitter":
                     ouvert = False
             if event.key == K_UP:
                 selectionActuelle -= 1
-                if selectionActuelle < 1:
-                    selectionActuelle = 1
+                if selectionActuelle < 0:
+                    selectionActuelle = 0
             if event.key == K_DOWN:
                 selectionActuelle += 1
-                if selectionActuelle > 2:
-                    selectionActuelle = 2
-
-    couleurJouer = (100, 100, 100)  # Couleur grise
-    couleurQuitter = (100, 100, 100)
-    if selectionActuelle == 1:
-        couleurJouer = (255, 0, 0)  # Couleur rouge
-    if selectionActuelle == 2:
-        couleurQuitter = (255, 0, 0)
+                if selectionActuelle > nbMenu:
+                    selectionActuelle = nbMenu
 
     fenetre.fill((0, 0, 0))  # On efface l'ecran
 
     # On affiche le menu
-    if selectionActuelle == 1:
-        text = font2.render("Jouer", 1, couleurJouer)
-    else:
-        text = font1.render("Jouer", 1, couleurJouer)
-    position = text.get_rect()
-    position.centerx = fenetre.get_rect().centerx
-    position.centery = fenetre.get_rect().bottom * 0.25
-    fenetre.blit(text, position)
-
-    if selectionActuelle == 2:
-        text = font2.render("Quitter", 1, couleurQuitter)
-    else:
-        text = font1.render("Quitter", 1, couleurQuitter)
-    position = text.get_rect()
-    position.centerx = fenetre.get_rect().centerx
-    position.centery = fenetre.get_rect().bottom * 0.75
-    fenetre.blit(text, position)
+    espacement = fenetre.get_rect().height / (nbMenu + 1)
+    for i in range(0, nbMenu):
+        if i == selectionActuelle:
+            text = font2.render(menu[i], 1, couleurRouge)
+        else:
+            text = font1.render(menu[i], 1, couleurGrise)
+        position = text.get_rect()
+        position.centerx = fenetre.get_rect().centerx
+        position.centery = espacement * (i + 1)
+        fenetre.blit(text, position)
 
     pygame.display.flip()
 
