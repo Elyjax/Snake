@@ -12,12 +12,12 @@ pygame.init()
 fenetre = pygame.display.set_mode((tailleCase * nombreCasesLargeur,
     tailleCase * nombreCasesHauteur))
 
-font1 = pygame.font.SysFont("default", 40)
-font2 = pygame.font.SysFont("default", 60)
+font1 = pygame.font.Font('font1.ttf', 40)
+font2 = pygame.font.Font("font1.ttf", 60)
 
 couleurRouge = (255, 0, 0)
 couleurGrise = (100, 100, 100)
-selectionActuelle = 1
+selectionActuelle = 0
 menu = ["Jouer", "Options", "Quitter"]
 nbMenu = len(menu)
 ouvert = True
@@ -38,8 +38,8 @@ while ouvert:
                     selectionActuelle = 0
             if event.key == K_DOWN:
                 selectionActuelle += 1
-                if selectionActuelle > nbMenu:
-                    selectionActuelle = nbMenu
+                if selectionActuelle >= nbMenu:
+                    selectionActuelle = nbMenu - 1
 
     fenetre.fill((0, 0, 0))  # On efface l'ecran
 
