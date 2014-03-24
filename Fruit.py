@@ -26,6 +26,6 @@ class Fruit :
                     collisionCreation = True
 
     def afficher(self, fenetre):
-        #surfaceAffichee = (self.typeFruit * tailleCase, 0, tailleCase, tailleCase)
+        surfaceAffichee = (self.typeFruit * tailleCase, 0, tailleCase, tailleCase)
         # Affichage du fruits
-        fenetre.blit(self.image,(self.positionFruit.x, self.positionFruit.y))#, surfaceAffichee)
+        fenetre.blit(self.image,(self.positionFruit.x, self.positionFruit.y), surfaceAffichee)
