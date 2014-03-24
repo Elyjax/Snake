@@ -2,6 +2,7 @@ import pygame
 from Position import *
 from constantes import *
 from Fruit import *
+import random
 
 class Serpent:
     def __init__(self, x, y):
@@ -16,6 +17,7 @@ class Serpent:
         self.direction = "droite"
 
     def miseAJour(self, fruits):
+        self.testManger(fruits)
         self.positionsCorps.insert(0, Position(self.positionTete.x, self.positionTete.y))
         self.positionsCorps.pop()
         if self.direction == "droite":
@@ -26,7 +28,7 @@ class Serpent:
             self.positionTete.y -= tailleCase
         elif self.direction == "bas":
             self.positionTete.y += tailleCase
-        self.testManger(fruits)
+        
 
     def afficher(self, fenetre):
         # Affichage de la tete
@@ -66,6 +68,21 @@ class Serpent:
         self.direction = direction
         return True
 
+    def malus(self):
+        n = self.positionTete
+        self.positionTete = self.positionsCorps[-1]
+        self.positionsCorps.pop()
+        self.positionsCorps.insert(0, n)
+        self.positionsCorps.reverse()
+        if self.direction == "haut":
+            self.direction = "bas"
+        elif self.direction == "bas":
+            self.direction = "haut"
+        elif self.direction == "droite":
+            self.direction = "gauche"
+        elif self.direction == "gauche":
+            self.direction = "droite"
+               
     def testCollision(self):
         for corps in self.positionsCorps:
             if self.positionTete.x == corps.x and \
@@ -88,3 +105,5 @@ class Serpent:
                 fruits.pop(index)
                 fruits.append(Fruit(self))
                 self.positionsCorps.append(Position(self.positionsCorps[-1].x,self.positionsCorps[-1].y))
+                if fruit.typeFruit == 1:
+                    self.malus()
