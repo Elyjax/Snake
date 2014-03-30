@@ -1,4 +1,5 @@
 from pygame.locals import *  # Quelques constantes utiles (K_UP, K_RIGHT...)
+from time import sleep
 from Serpent import *
 from Fruit import *
 from Musique import *
@@ -16,7 +17,8 @@ def jouer(fenetre):
     fond = pygame.image.load("Images/Fond.png").convert()
     # Creation police de caractere pour texte potentiel
     pygame.font.init()
-    font = pygame.font.Font("font2.ttf", 20)
+    fontScore = pygame.font.Font("font2.ttf", 20)
+    fontGameOver = pygame.font.Font("font3.ttf", 80)
 
     # Cree une table de correspondance entre les constantes qui represente les
     # fleche directionnelles et le nom de la direction
@@ -47,7 +49,7 @@ def jouer(fenetre):
             # Ferme l'application quand on clique sur la croix
             if event.type == QUIT:
                 musique.Stop()
-                ouvert = False
+                exit()
             if event.type == KEYDOWN:
                 # Ferme aussi l'application quand on appui sur ESC
                     if event.key == K_ESCAPE:
@@ -99,10 +101,24 @@ def jouer(fenetre):
             fichierScore.close()
 
         # Affichage des scores
-        fenetre.blit(font.render("Score : " + str(scoreActuel), 1,
+        fenetre.blit(fontScore.render("Score : " + str(scoreActuel), 1,
             (255, 255, 255)), (0, 0))
-        fenetre.blit(font.render("Meilleur score : " + str(meilleurScore), 1,
+        fenetre.blit(fontScore.render("Meilleur score : " + str(meilleurScore), 1,
             (255, 255, 255)), (0, 16))
 
         # On actualise l'ecran
         pygame.display.flip()
+
+    fenetre.fill((0, 0, 0))
+    gameOver = fontGameOver.render("Game Over !", 1, (230, 160, 20))
+    fen = fenetre.get_rect()
+    position = gameOver.get_rect()
+    position.center = fen.center
+    fenetre.blit(gameOver, position)
+    score = fontScore.render("Votre score : " + str(scoreActuel), 1, (255, 255, 255))
+    position = score.get_rect()
+    position.centerx = fen.centerx
+    position.centery = fen.height * 0.75
+    fenetre.blit(score, position)
+    pygame.display.flip()
+    sleep(2)
