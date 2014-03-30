@@ -1,5 +1,5 @@
 import pygame
-from Position import *
+from Position import Position
 from constantes import *
 from Fruit import *
 import random
@@ -11,15 +11,14 @@ class Serpent:
         # Charge l'image de la tete du serpent
         # Celle ci contient les quatres positions possibles de la tete
         self.imageTete = pygame.image.load("Images/Tetes.png").convert_alpha()
-        self.positionTete = Position(x, y)
         self.positionsCorps = list()
+        self.positionsCorps.append(Position(x, y))
         self.positionsCorps.append(Position(-16,-16))
+        self.positionTete = self.positionsCorps[0]
         self.direction = "droite"
 
     def miseAJour(self, fruits):
-        self.testManger(fruits)
-        self.positionsCorps.insert(0, Position(self.positionTete.x, self.positionTete.y))
-        self.positionsCorps.pop()
+        pos = Position(self.positionTete.x, self.positionTete.y)
         if self.direction == "droite":
             self.positionTete.x += tailleCase
         elif self.direction == "gauche":
@@ -28,7 +27,12 @@ class Serpent:
             self.positionTete.y -= tailleCase
         elif self.direction == "bas":
             self.positionTete.y += tailleCase
-        
+        for corps in self.positionsCorps[1 :]:
+            tmp = Position(corps.x, corps.y)
+            corps.x = pos.x
+            corps.y = pos.y
+            pos = tmp
+        self.testManger(fruits)
 
     def afficher(self, fenetre):
         # Affichage de la tete
@@ -47,7 +51,7 @@ class Serpent:
                      , surfaceAfficher)
 
         # Affichage de chaque element du corps
-        for corps in self.positionsCorps:
+        for corps in self.positionsCorps[1 :]:
             fenetre.blit(self.imageCorps, (corps.x, corps.y), (0, 0, 64, 64))
 
     def changerDirection(self, direction):
@@ -69,22 +73,21 @@ class Serpent:
         return True
 
     def malus(self):
-        n = self.positionTete
-        self.positionTete = self.positionsCorps[-1]
-        self.positionsCorps.pop()
-        self.positionsCorps.insert(0, n)
         self.positionsCorps.reverse()
-        if self.direction == "haut":
+        self.positionTete = self.positionsCorps[0]
+        tete = self.positionTete
+        corps = self.positionsCorps[1]
+        if tete.y > corps.y:
             self.direction = "bas"
-        elif self.direction == "bas":
+        elif tete.y < corps.y:
             self.direction = "haut"
-        elif self.direction == "droite":
+        elif tete.x < corps.x:
             self.direction = "gauche"
-        elif self.direction == "gauche":
+        elif tete.x > corps.x:
             self.direction = "droite"
-               
+
     def testCollision(self):
-        for corps in self.positionsCorps:
+        for corps in self.positionsCorps[1 :]:
             if self.positionTete.x == corps.x and \
                self.positionTete.y == corps.y:
                 return True
@@ -102,8 +105,8 @@ class Serpent:
         for index, fruit in enumerate(fruits):
             if self.positionTete.x == fruit.positionFruit.x and \
                self.positionTete.y == fruit.positionFruit.y:
-                fruits.pop(index)
-                fruits.append(Fruit(self))
-                self.positionsCorps.append(Position(self.positionsCorps[-1].x,self.positionsCorps[-1].y))
                 if fruit.typeFruit == 1:
                     self.malus()
+                fruits.pop(index)
+                fruits.append(Fruit(self))
+                self.positionsCorps.append(Position(-16, -16))
