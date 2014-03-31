@@ -28,6 +28,8 @@ while ouvert:
         if event.type == QUIT:
             ouvert = False
         if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                ouvert = False
             if event.key == K_RETURN:
                 if menu[selectionActuelle] == "Jouer":
                     jouer(fenetre)
