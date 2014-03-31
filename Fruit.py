@@ -10,7 +10,14 @@ from Serpent import *
 
 class Fruit :
     def __init__(self, serpent):
-        self.typeFruit = random.randint(0, 1)
+        i = random.randint(0, 3)
+        if i == 0 or i == 1:
+            self.typeFruit = 0
+        if i == 2:
+            self.typeFruit = 1
+        if i == 3:
+            self.typeFruit = 2
+            
         # Charge l'image du fruit et la convertie dans le bon format
         self.image = pygame.image.load("Images/Fruits.png").convert_alpha()
 

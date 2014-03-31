@@ -107,6 +107,9 @@ class Serpent:
                self.positionTete.y == fruit.positionFruit.y:
                 if fruit.typeFruit == 1:
                     self.malus()
+                if fruit.typeFruit == 2:
+                    for i in range(0, 10):
+                        self.positionsCorps.append(Position(-16, -16))
                 fruits.pop(index)
                 fruits.append(Fruit(self))
                 self.positionsCorps.append(Position(-16, -16))
