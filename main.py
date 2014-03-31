@@ -4,6 +4,7 @@ import pygame
 # L'etoile indique que l'on importe tout
 from constantes import *
 from jouer import *
+from options import *
 
 pygame.init()
 
@@ -30,6 +31,8 @@ while ouvert:
             if event.key == K_RETURN:
                 if menu[selectionActuelle] == "Jouer":
                     jouer(fenetre)
+                if menu[selectionActuelle] == "Options":
+                    options(fenetre)
                 if menu[selectionActuelle] == "Quitter":
                     ouvert = False
             if event.key == K_UP:
