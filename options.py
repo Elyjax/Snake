@@ -3,13 +3,9 @@ import pygame
 # La syntaxe from x import y permet de ne pas devoir ecrire x.y mais juste y
 # L'etoile indique que l'on importe tout
 from pickle import *
+from Sauvegarde import *
 from constantes import *
 from pygame.locals import * # Quelques constantes utiles
-
-class stockageOptions:
-    def __init__(self):
-        self.vitesse = 5
-        self.jouerMusique = True
 
 def options(fenetre):
 
@@ -22,11 +18,11 @@ def options(fenetre):
     ouvert = True
 
     selections = ["Vitesse", "Musique", "Retour"]
-    optionsActuelles = stockageOptions()
+    sauvegarde = Sauvegarde()
     try:
-        optionsActuelles = load(file("options"))
+        sauvegarde = load(file("sauvegarde", "rb"))
     except IOError: # Si le fichier n'exsite pas, on le cree
-        dump(optionsActuelles, file("options", "w"))
+        dump(sauvegarde, file("sauvegarde", "wb"))
 
     while ouvert:
         for event in pygame.event.get(): # Gestion des evenements
@@ -50,28 +46,24 @@ def options(fenetre):
 
                 if selections[selectionActuelle] == "Vitesse":
                     if event.key == K_LEFT:
-                        #delaisMiseAJour += 25
-                        optionsActuelles.vitesse -= 1
-                        if optionsActuelles.vitesse < 1:
-                            optionsActuelles.vitesse = 1
-                            #delaisMiseAJour = 225
+                        sauvegarde.vitesse -= 1
+                        if sauvegarde.vitesse < 1:
+                            sauvegarde.vitesse = 1
 
                     if event.key == K_RIGHT:
-                        #delaisMiseAJour -= 25
-                        optionsActuelles.vitesse += 1
-                        if optionsActuelles.vitesse > 9:
-                            optionsActuelles.vitesse = 9
-                            #delaisMiseAJour = 25
+                        sauvegarde.vitesse += 1
+                        if sauvegarde.vitesse > 9:
+                            sauvegarde.vitesse = 9
 
                 if event.key == K_RETURN:
                     if selections[selectionActuelle] == "Retour":
                         ouvert = False
 
                     if selections[selectionActuelle] == "Musique":
-                        if optionsActuelles.jouerMusique:
-                            optionsActuelles.jouerMusique = False
+                        if sauvegarde.jouerMusique:
+                            sauvegarde.jouerMusique = False
                         else:
-                            optionsActuelles.jouerMusique = True
+                            sauvegarde.jouerMusique = True
 
         fenetre.fill((0, 0, 0))  # On efface l'ecran
 
@@ -87,15 +79,15 @@ def options(fenetre):
             position.centery = espacement * (i + 1)
             fenetre.blit(text, position)
 
-            if selections[i] == "Vitesse" : 
+            if selections[i] == "Vitesse" :
                 # Affichage de la vitesse
-                textBis = font2.render(str(optionsActuelles.vitesse), 1, couleurRouge)
+                textBis = font2.render(str(sauvegarde.vitesse), 1, couleurRouge)
                 positionBis = position
                 positionBis.centerx = fenetre.get_width() - 1.5 * textBis.get_width()
                 fenetre.blit(textBis, positionBis)
-            if selections[i] == "Musique" : 
+            if selections[i] == "Musique" :
                 # Affichage de la vitesse
-                if optionsActuelles.jouerMusique:
+                if sauvegarde.jouerMusique:
                     textBis = font2.render("On", 1, couleurRouge)
                 else:
                     textBis = font2.render("Off", 1, couleurRouge)
@@ -105,4 +97,4 @@ def options(fenetre):
 
         pygame.display.flip()
 
-    dump(optionsActuelles, file("options", "w"))
+    dump(sauvegarde, file("sauvegarde", "wb"))

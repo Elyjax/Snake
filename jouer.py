@@ -1,8 +1,10 @@
 from pygame.locals import *  # Quelques constantes utiles (K_UP, K_RIGHT...)
 from time import sleep
+from pickle import *
 from Serpent import *
 from Fruit import *
 from Musique import *
+from Sauvegarde import *
 
 def jouer(fenetre):
     # Creation de l'objet de type Serpent
@@ -10,13 +12,8 @@ def jouer(fenetre):
     # Creation de l'objet de type fruits
     fruits = list()
     fruits.append(Fruit(serpent))
-    #Creation de l'objet de type Musique
-    musique = Musique()
-    musique.MoteurMusique()
-    # Chargement de l'image de fond
-    fond = pygame.image.load("Images/Fond.png").convert()
-    # Creation police de caractere pour texte potentiel
     pygame.font.init()
+
     fontScore = pygame.font.Font("font2.ttf", 20)
     fontGameOver = pygame.font.Font("font3.ttf", 80)
     fontPause = pygame.font.Font("font4.ttf", 60)
@@ -29,17 +26,21 @@ def jouer(fenetre):
     table[K_DOWN] = "bas"
     table[K_LEFT] = "gauche"
 
-    meilleurScore = 0
-
+    sauvegarde = Sauvegarde()
     try:
-        fichierScore = open("score.txt", "r")
-        meilleurScore = int(fichierScore.read())
-        fichierScore.close()
+        sauvegarde = load(file("sauvegarde", "rb"))
     except IOError: # Si le fichier n'exsite pas, on le cree
-        fichierScore = open("score.txt", "w")
-        fichierScore.write("0")
-        fichierScore.close()
+        dump(sauvegarde, file("sauvegarde", "wb"))
 
+    #Creation de l'objet de type Musique
+    musique = Musique()
+    # On joue la musique si elle est activee dans les options
+    if sauvegarde.jouerMusique:
+        musique.MoteurMusique()
+
+    # Chargement de l'image de fond
+    fond = pygame.image.load("Images/Fond.png").convert()
+    # Creation police de caractere pour texte potentiel
     scoreActuel = 0
     compteur = 0
     clock = pygame.time.Clock()
@@ -54,71 +55,70 @@ def jouer(fenetre):
                 exit()
             if event.type == KEYDOWN:
                 # Ferme aussi l'application quand on appui sur ESC
-                    if event.key == K_ESCAPE:
-						if pause:
-							pause = False
-						else:
-							pause = True
-							textePause = fontPause.render("Pause", 1, (110, 200, 255))
-							position = textePause.get_rect()
-							position.center = fenetre.get_rect().center
-							fenetre.blit(textePause, position)
-							pygame.display.flip()
+                if event.key == K_ESCAPE:
+                    if pause:
+                        pause = False
+                    else:
+                        pause = True
+                        textePause = fontPause.render("Pause", 1, (110, 200, 255))
+                        position = textePause.get_rect()
+                        position.center = fenetre.get_rect().center
+                        fenetre.blit(textePause, position)
+                        pygame.display.flip()
 
-                    # Teste si la touche est une fleche
-                    toucheFleche = (K_UP, K_RIGHT, K_DOWN, K_LEFT)
-                    if event.key in toucheFleche and pause == False:
-                        # Teste si le changement c'est bien effectue
-                            if serpent.changerDirection(table[event.key]):
-                                serpent.miseAJour(fruits)
-                                compteur = 0
-                    # L'appui sur une touche fleche change la direction du serpent et
-                    # lance automatique une mise a jour
-		
+                # Teste si la touche est une fleche
+                toucheFleche = (K_UP, K_RIGHT, K_DOWN, K_LEFT)
+                if event.key in toucheFleche and pause == False:
+                    # Teste si le changement c'est bien effectue
+                        if serpent.changerDirection(table[event.key]):
+                            serpent.miseAJour(fruits)
+                            compteur = 0
+                # L'appui sur une touche fleche change la direction du serpent et
+                # lance automatique une mise a jour
+
         if pause == False:
-			# On ajoute le temps ecoule depuis la derniere mise jour a un compteur
-			# On met a jour le serpent si compteur > delaisMiseAJour
-			# Plus delaisMiseAJour est grand plus le serpent sera lent
-			compteur += clock.tick()
-			if compteur >= delaisMiseAJour:
-				serpent.miseAJour(fruits)
-				compteur = 0
+            # On ajoute le temps ecoule depuis la derniere mise jour a un compteur
+            # On met a jour le serpent si compteur > delaisMiseAJour
+            # Plus delaisMiseAJour est grand plus le serpent sera lent
+            delaisMiseAJour = (10 - sauvegarde.vitesse) * 25
+            compteur += clock.tick()
+            if compteur >= delaisMiseAJour:
+                serpent.miseAJour(fruits)
+                compteur = 0
 
-			# Si le serpent rencontre un bord du niveau ou se rentre dedans, on quitte
-			if serpent.testCollision():
-				musique.Stop()
-				break
-			# On efface l'ecran
-			fenetre.fill((0, 0, 0))
+            # Si le serpent rencontre un bord du niveau ou se rentre dedans, on quitte
+            if serpent.testCollision():
+                musique.Stop()
+                break
+            # On efface l'ecran
+            fenetre.fill((0, 0, 0))
 
-			# On affiche le fond
-			for i in range(tailleBord, nombreCasesLargeur - tailleBord):
-				for j in range(tailleBord, nombreCasesHauteur - tailleBord):
-					fenetre.blit(fond, (i * tailleCase, j * tailleCase))
+            # On affiche le fond
+            for i in range(tailleBord, nombreCasesLargeur - tailleBord):
+                for j in range(tailleBord, nombreCasesHauteur - tailleBord):
+                    fenetre.blit(fond, (i * tailleCase, j * tailleCase))
 
-			# Affichage des fruits
-			for fruit in fruits:
-				fruit.afficher(fenetre)
+            # Affichage des fruits
+            for fruit in fruits:
+                fruit.afficher(fenetre)
 
-			# Affichage des serpents
-			serpent.afficher(fenetre)
+            # Affichage des serpents
+            serpent.afficher(fenetre)
 
-			# Mise a jour des scores
-			scoreActuel = len(serpent.positionsCorps) - 1
-			if scoreActuel > meilleurScore:
-				meilleurScore = scoreActuel
-				fichierScore = open("score.txt", "w")
-				fichierScore.write(str(meilleurScore))
-				fichierScore.close()
+            # Mise a jour des scores
+            scoreActuel = len(serpent.positionsCorps) - 1
+            if scoreActuel > sauvegarde.score:
+                sauvegarde.score = scoreActuel
+                dump(sauvegarde, file("sauvegarde", "wb"))
 
-			# Affichage des scores
-			fenetre.blit(fontScore.render("Score : " + str(scoreActuel), 1,
-				(255, 255, 255)), (0, 0))
-			fenetre.blit(fontScore.render("Meilleur score : " + str(meilleurScore), 1,
-				(255, 255, 255)), (0, 16))
+            # Affichage des scores
+            fenetre.blit(fontScore.render("Score : " + str(scoreActuel), 1,
+                (255, 255, 255)), (0, 0))
+            fenetre.blit(fontScore.render("Meilleur score : " + str(sauvegarde.score), 1,
+                (255, 255, 255)), (0, 16))
 
-			# On actualise l'ecran
-			pygame.display.flip()
+            # On actualise l'ecran
+            pygame.display.flip()
 
     fenetre.fill((0, 0, 0))
     gameOver = fontGameOver.render("Game Over !", 1, (230, 160, 20))
