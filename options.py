@@ -97,4 +97,5 @@ def options(fenetre):
 
         pygame.display.flip()
 
+    # On sauvegarde les options
     dump(sauvegarde, file("sauvegarde", "wb"))
