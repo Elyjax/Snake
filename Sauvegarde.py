@@ -1,5 +1,5 @@
 class Sauvegarde():
     def __init__(self):
-        self.vitesse = 5
-        self.jouerMusique = True
+        self.vitesse = 1
+        self.jouerMusique = "On"
         self.score = 0

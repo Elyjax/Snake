@@ -17,6 +17,7 @@ def options(fenetre):
     selectionActuelle = 0
     ouvert = True
 
+    vitesses = ["Lente", "Normale", "Rapide", "Extreme"]
     selections = ["Vitesse", "Musique", "Retour"]
     sauvegarde = Sauvegarde()
     try:
@@ -47,23 +48,23 @@ def options(fenetre):
                 if selections[selectionActuelle] == "Vitesse":
                     if event.key == K_LEFT:
                         sauvegarde.vitesse -= 1
-                        if sauvegarde.vitesse < 1:
-                            sauvegarde.vitesse = 1
+                        if sauvegarde.vitesse < 0:
+                            sauvegarde.vitesse = 0
 
                     if event.key == K_RIGHT:
                         sauvegarde.vitesse += 1
-                        if sauvegarde.vitesse > 9:
-                            sauvegarde.vitesse = 9
+                        if sauvegarde.vitesse > 3:
+                            sauvegarde.vitesse = 3
 
                 if event.key == K_RETURN:
                     if selections[selectionActuelle] == "Retour":
                         ouvert = False
 
                     if selections[selectionActuelle] == "Musique":
-                        if sauvegarde.jouerMusique:
-                            sauvegarde.jouerMusique = False
+                        if sauvegarde.jouerMusique == "On":
+                            sauvegarde.jouerMusique = "Off"
                         else:
-                            sauvegarde.jouerMusique = True
+                            sauvegarde.jouerMusique = "On"
 
         fenetre.fill((0, 0, 0))  # On efface l'ecran
 
@@ -81,20 +82,26 @@ def options(fenetre):
 
             if selections[i] == "Vitesse" :
                 # Affichage de la vitesse
-                textBis = font2.render(str(sauvegarde.vitesse), 1, couleurRouge)
-                positionBis = position
-                positionBis.centerx = fenetre.get_width() - 1.5 * textBis.get_width()
-                fenetre.blit(textBis, positionBis)
-            if selections[i] == "Musique" :
-                # Affichage de la vitesse
-                if sauvegarde.jouerMusique:
-                    textBis = font2.render("On", 1, couleurRouge)
-                else:
-                    textBis = font2.render("Off", 1, couleurRouge)
-                positionBis = position
-                positionBis.centerx = fenetre.get_width() - 1.5 * textBis.get_width()
+		if i == selectionActuelle:
+	            textBis = font2.render(vitesses[sauvegarde.vitesse], 1, couleurRouge)
+		else:
+		    textBis = font1.render(vitesses[sauvegarde.vitesse], 1, couleurGrise)
+		positionBis = textBis.get_rect()
+		positionBis.centery = espacement * (i + 1)
+                positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2
                 fenetre.blit(textBis, positionBis)
 
+            if selections[i] == "Musique" :
+                # Affichage de l'option musique
+		if i == selectionActuelle:
+                    textBis = font2.render(sauvegarde.jouerMusique, 1, couleurRouge)
+                else:
+                    textBis = font1.render(sauvegarde.jouerMusique, 1, couleurGrise)
+		positionBis = textBis.get_rect()
+		positionBis.centery = espacement * (i + 1)
+                positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2
+                fenetre.blit(textBis, positionBis)
+	
         pygame.display.flip()
 
     # On sauvegarde les options

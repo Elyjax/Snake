@@ -35,7 +35,7 @@ def jouer(fenetre):
     #Creation de l'objet de type Musique
     musique = Musique()
     # On joue la musique si elle est activee dans les options
-    if sauvegarde.jouerMusique:
+    if sauvegarde.jouerMusique == "On":
         musique.MoteurMusique()
 
     # Chargement de l'image de fond
@@ -80,7 +80,7 @@ def jouer(fenetre):
             # On ajoute le temps ecoule depuis la derniere mise jour a un compteur
             # On met a jour le serpent si compteur > delaisMiseAJour
             # Plus delaisMiseAJour est grand plus le serpent sera lent
-            delaisMiseAJour = (10 - sauvegarde.vitesse) * 25
+            delaisMiseAJour = [200, 100, 50, 25][sauvegarde.vitesse]
             compteur += clock.tick()
             if compteur >= delaisMiseAJour:
                 serpent.miseAJour(fruits)
