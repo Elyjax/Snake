@@ -13,12 +13,11 @@ def options(fenetre):
     font2 = pygame.font.Font("font1.ttf", 40)
     couleurRouge = (255, 0, 0)
     couleurGrise = (100, 100, 100)
-
     selectionActuelle = 0
     ouvert = True
-
     vitesses = ["Lente", "Normale", "Rapide", "Extreme"]
     selections = ["Vitesse", "Musique", "Retour"]
+
     sauvegarde = Sauvegarde()
     try:
         sauvegarde = load(file("sauvegarde", "rb"))
@@ -35,6 +34,7 @@ def options(fenetre):
                 if event.key == K_ESCAPE:
                     ouvert = False
 
+		# Deplacement dans le menu avec les fleches directionnelle
                 if event.key == K_UP:
                     selectionActuelle -= 1
                     if selectionActuelle < 0:
@@ -45,6 +45,8 @@ def options(fenetre):
                     if selectionActuelle >= len(selections):
                         selectionActuelle = len(selections) - 1
 
+		# Modification de la vitesse
+		# 4 niveaux de vitesses differents
                 if selections[selectionActuelle] == "Vitesse":
                     if event.key == K_LEFT:
                         sauvegarde.vitesse -= 1
@@ -56,6 +58,7 @@ def options(fenetre):
                         if sauvegarde.vitesse > 3:
                             sauvegarde.vitesse = 3
 
+		# Bascule de la musique entre On et Off
                 if event.key == K_RETURN:
                     if selections[selectionActuelle] == "Retour":
                         ouvert = False

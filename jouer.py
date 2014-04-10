@@ -40,7 +40,7 @@ def jouer(fenetre):
 
     # Chargement de l'image de fond
     fond = pygame.image.load("Images/Fond.png").convert()
-    # Creation police de caractere pour texte potentiel
+    # Creation de polices de caracteres
     scoreActuel = 0
     compteur = 0
     clock = pygame.time.Clock()
@@ -54,7 +54,7 @@ def jouer(fenetre):
                 musique.Stop()
                 exit()
             if event.type == KEYDOWN:
-                # Ferme aussi l'application quand on appui sur ESC
+                # On met le jeu en pause lors de l'appuis sur ESC
                 if event.key == K_ESCAPE:
                     if pause:
                         pause = False
@@ -79,6 +79,7 @@ def jouer(fenetre):
         if pause == False:
             # On ajoute le temps ecoule depuis la derniere mise jour a un compteur
             # On met a jour le serpent si compteur > delaisMiseAJour
+	    # On selectionne delaisMiseAJour selon la vitesse du serpent
             # Plus delaisMiseAJour est grand plus le serpent sera lent
             delaisMiseAJour = [200, 100, 50, 25][sauvegarde.vitesse]
             compteur += clock.tick()
@@ -120,6 +121,7 @@ def jouer(fenetre):
             # On actualise l'ecran
             pygame.display.flip()
 
+    # Affichage de l'ecran de GameOver
     fenetre.fill((0, 0, 0))
     gameOver = fontGameOver.render("Game Over !", 1, (230, 160, 20))
     fen = fenetre.get_rect()
