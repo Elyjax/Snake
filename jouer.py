@@ -14,9 +14,9 @@ def jouer(fenetre):
     fruits.append(Fruit(serpent))
     pygame.font.init()
 
-    fontScore = pygame.font.Font("font2.ttf", 20)
-    fontGameOver = pygame.font.Font("font3.ttf", 80)
-    fontPause = pygame.font.Font("font4.ttf", 60)
+    fontScore = pygame.font.Font("Fonts/font2.ttf", 20)
+    fontGameOver = pygame.font.Font("Fonts/font3.ttf", 80)
+    fontPause = pygame.font.Font("Fonts/font4.ttf", 60)
 
     # Cree une table de correspondance entre les constantes qui represente les
     # fleche directionnelles et le nom de la direction

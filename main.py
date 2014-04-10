@@ -13,8 +13,8 @@ pygame.init()
 fenetre = pygame.display.set_mode((tailleCase * nombreCasesLargeur,
     tailleCase * nombreCasesHauteur))
 
-font1 = pygame.font.Font('font1.ttf', 40)
-font2 = pygame.font.Font("font1.ttf", 60)
+font1 = pygame.font.Font('Fonts/font1.ttf', 40)
+font2 = pygame.font.Font("Fonts/font1.ttf", 60)
 
 couleurRouge = (255, 0, 0)
 couleurGrise = (100, 100, 100)

@@ -9,8 +9,8 @@ from pygame.locals import * # Quelques constantes utiles
 
 def options(fenetre):
 
-    font1 = pygame.font.Font('font1.ttf', 30)
-    font2 = pygame.font.Font("font1.ttf", 40)
+    font1 = pygame.font.Font("Fonts/font1.ttf", 30)
+    font2 = pygame.font.Font("Fonts/font1.ttf", 40)
     couleurRouge = (255, 0, 0)
     couleurGrise = (100, 100, 100)
     selectionActuelle = 0
