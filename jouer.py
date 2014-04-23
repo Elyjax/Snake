@@ -135,3 +135,4 @@ def jouer(fenetre):
     fenetre.blit(score, position)
     pygame.display.flip()
     sleep(2)
+    pygame.event.clear()
