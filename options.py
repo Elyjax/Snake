@@ -9,10 +9,8 @@ from pygame.locals import * # Quelques constantes utiles
 
 def options(fenetre):
 
-    font1 = pygame.font.Font("Fonts/font1.ttf", 30)
-    font2 = pygame.font.Font("Fonts/font1.ttf", 40)
-    couleurRouge = (255, 0, 0)
-    couleurGrise = (100, 100, 100)
+    font1 = pygame.font.Font("Fonts/font1.ttf", 40)
+    font2 = pygame.font.Font("Fonts/font1.ttf", 80)
     selectionActuelle = 0
     ouvert = True
     vitesses = ["Lente", "Normale", "Rapide", "Extreme"]
@@ -69,7 +67,7 @@ def options(fenetre):
                         else:
                             sauvegarde.jouerMusique = "On"
 
-        fenetre.fill((0, 0, 0))  # On efface l'ecran
+        fenetre.fill(couleurBlanche)  # On efface l'ecran
 
         # On affiche le menu
         espacement = fenetre.get_rect().height / (len(selections) + 1)
@@ -77,7 +75,7 @@ def options(fenetre):
             if i == selectionActuelle:
                 text = font2.render(selections[i], 1, couleurRouge)
             else:
-                text = font1.render(selections[i], 1, couleurGrise)
+                text = font1.render(selections[i], 1, couleurNoire)
             position = text.get_rect()
             position.centerx = fenetre.get_rect().centerx
             position.centery = espacement * (i + 1)
@@ -88,7 +86,7 @@ def options(fenetre):
 		if i == selectionActuelle:
 	            textBis = font2.render(vitesses[sauvegarde.vitesse], 1, couleurRouge)
 		else:
-		    textBis = font1.render(vitesses[sauvegarde.vitesse], 1, couleurGrise)
+		    textBis = font1.render(vitesses[sauvegarde.vitesse], 1, couleurNoire)
 		positionBis = textBis.get_rect()
 		positionBis.centery = espacement * (i + 1)
                 positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2
@@ -99,7 +97,7 @@ def options(fenetre):
 		if i == selectionActuelle:
                     textBis = font2.render(sauvegarde.jouerMusique, 1, couleurRouge)
                 else:
-                    textBis = font1.render(sauvegarde.jouerMusique, 1, couleurGrise)
+                    textBis = font1.render(sauvegarde.jouerMusique, 1, couleurNoire)
 		positionBis = textBis.get_rect()
 		positionBis.centery = espacement * (i + 1)
                 positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2

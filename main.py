@@ -12,12 +12,11 @@ pygame.init()
 #                  sur tailleCase * nombreCasesHauteur
 fenetre = pygame.display.set_mode((tailleCase * nombreCasesLargeur,
     tailleCase * nombreCasesHauteur))
+pygame.display.set_caption("Snake")
 
 font1 = pygame.font.Font('Fonts/font1.ttf', 40)
-font2 = pygame.font.Font("Fonts/font1.ttf", 60)
+font2 = pygame.font.Font("Fonts/font1.ttf", 80)
 
-couleurRouge = (255, 0, 0)
-couleurGrise = (100, 100, 100)
 selectionActuelle = 0
 menu = ["Jouer", "Options", "Quitter"]
 nbMenu = len(menu)
@@ -46,7 +45,7 @@ while ouvert:
                 if selectionActuelle >= nbMenu:
                     selectionActuelle = nbMenu - 1
 
-    fenetre.fill((0, 0, 0))  # On efface l'ecran
+    fenetre.fill(couleurBlanche)  # On efface l'ecran
 
     # On affiche le menu
     espacement = fenetre.get_rect().height / (nbMenu + 1)
@@ -54,7 +53,7 @@ while ouvert:
         if i == selectionActuelle:
             text = font2.render(menu[i], 1, couleurRouge)
         else:
-            text = font1.render(menu[i], 1, couleurGrise)
+            text = font1.render(menu[i], 1, couleurNoire)
         position = text.get_rect()
         position.centerx = fenetre.get_rect().centerx
         position.centery = espacement * (i + 1)

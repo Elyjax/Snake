@@ -60,7 +60,7 @@ def jouer(fenetre):
                         pause = False
                     else:
                         pause = True
-                        textePause = fontPause.render("Pause", 1, (110, 200, 255))
+                        textePause = fontPause.render("Pause", 1, couleurBlanche)
                         position = textePause.get_rect()
                         position.center = fenetre.get_rect().center
                         fenetre.blit(textePause, position)
@@ -92,7 +92,7 @@ def jouer(fenetre):
                 musique.Stop()
                 break
             # On efface l'ecran
-            fenetre.fill((0, 0, 0))
+            fenetre.fill(couleurBlanche)
 
             # On affiche le fond
             for i in range(tailleBord, nombreCasesLargeur - tailleBord):
@@ -114,25 +114,27 @@ def jouer(fenetre):
 
             # Affichage des scores
             fenetre.blit(fontScore.render("Score : " + str(scoreActuel), 1,
-                (255, 255, 255)), (0, 0))
+                couleurNoire), (0, 0))
             fenetre.blit(fontScore.render("Meilleur score : " + str(sauvegarde.score), 1,
-                (255, 255, 255)), (0, 16))
+                couleurNoire), (0, 16))
 
             # On actualise l'ecran
             pygame.display.flip()
 
     # Affichage de l'ecran de GameOver
-    fenetre.fill((0, 0, 0))
-    gameOver = fontGameOver.render("Game Over !", 1, (230, 160, 20))
+    fenetre.fill(couleurBlanche)
+    gameOver = fontGameOver.render("Game Over !", 1, couleurRouge)
     fen = fenetre.get_rect()
     position = gameOver.get_rect()
     position.center = fen.center
     fenetre.blit(gameOver, position)
-    score = fontScore.render("Votre score : " + str(scoreActuel), 1, (255, 255, 255))
+    score = fontScore.render("Votre score : " + str(scoreActuel), 1, couleurNoire)
     position = score.get_rect()
     position.centerx = fen.centerx
     position.centery = fen.height * 0.75
     fenetre.blit(score, position)
     pygame.display.flip()
+    # On fait une pause de 2s
     sleep(2)
+    # On efface les evenements produits durant l'attente
     pygame.event.clear()
