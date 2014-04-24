@@ -96,21 +96,25 @@ class Serpent:
             if self.positionTete.y >= (nombreCasesHauteur - tailleBord) * tailleCase:
                 return True
             if self.positionTete.x < tailleBord * tailleCase:
-		print("ok")
                 return True
             if self.positionTete.y < tailleBord * tailleCase:
                 return True
         return False
 
-    def testManger(self, fruits):
-        for index, fruit in enumerate(fruits):
-            if self.positionTete.x == fruit.positionFruit.x and \
-               self.positionTete.y == fruit.positionFruit.y:
-                if fruit.typeFruit == 1:
-                    self.malus()
-                if fruit.typeFruit == 2:
-                    for i in range(0, 10):
-                        self.positionsCorps.append(Position(-tailleCase, -tailleCase))
-                fruits.pop(index)
-                fruits.append(Fruit(self))
-                self.positionsCorps.append(Position(-tailleCase, -tailleCase))
+    def ajouterCorps(self, nombreCorps):
+        for i in range(0, nombreCorps):
+            self.positionsCorps.append(Position(-tailleCase, -tailleCase))
+
+    def testManger(self, fruit):
+        if self.positionTete.x == fruit.positionFruit.x and \
+        self.positionTete.y == fruit.positionFruit.y:
+            # La banane met un malus
+            if fruit.typeFruit == 1:
+                self.malus()
+                self.ajouterCorps(1)
+            # L'orange fait grandir de 10 le corps
+            if fruit.typeFruit == 2:
+                self.ajouterCorps(10)
+            else:  # Sinon c'est la pomme
+                self.ajouterCorps(1)
+            fruit.generer()

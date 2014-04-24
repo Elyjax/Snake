@@ -9,9 +9,8 @@ from Sauvegarde import *
 def jouer(fenetre):
     # Creation de l'objet de type Serpent
     serpent = Serpent((tailleBord + 2) * tailleCase, (tailleBord + 2) * tailleCase)
-    # Creation de l'objet de type fruits
-    fruits = list()
-    fruits.append(Fruit(serpent))
+    # Creation de l'objet de type fruit
+    fruit = Fruit(serpent)
     pygame.font.init()
 
     fontScore = pygame.font.Font("Fonts/font2.ttf", 20)
@@ -71,7 +70,7 @@ def jouer(fenetre):
                 if event.key in toucheFleche and pause == False:
                     # Teste si le changement c'est bien effectue
                         if serpent.changerDirection(table[event.key]):
-                            serpent.miseAJour(fruits)
+                            serpent.miseAJour(fruit)
                             compteur = 0
                 # L'appui sur une touche fleche change la direction du serpent et
                 # lance automatique une mise a jour
@@ -79,12 +78,12 @@ def jouer(fenetre):
         if pause == False:
             # On ajoute le temps ecoule depuis la derniere mise jour a un compteur
             # On met a jour le serpent si compteur > delaisMiseAJour
-	    # On selectionne delaisMiseAJour selon la vitesse du serpent
+        # On selectionne delaisMiseAJour selon la vitesse du serpent
             # Plus delaisMiseAJour est grand plus le serpent sera lent
             delaisMiseAJour = [200, 100, 50, 25][sauvegarde.vitesse]
             compteur += clock.tick()
             if compteur >= delaisMiseAJour:
-                serpent.miseAJour(fruits)
+                serpent.miseAJour(fruit)
                 compteur = 0
 
             # Si le serpent rencontre un bord du niveau ou se rentre dedans, on quitte
@@ -99,9 +98,8 @@ def jouer(fenetre):
                 for j in range(tailleBord, nombreCasesHauteur - tailleBord):
                     fenetre.blit(fond, (i * tailleCase, j * tailleCase))
 
-            # Affichage des fruits
-            for fruit in fruits:
-                fruit.afficher(fenetre)
+            # Affichage du fruit
+            fruit.afficher(fenetre)
 
             # Affichage des serpents
             serpent.afficher(fenetre)
