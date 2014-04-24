@@ -1,7 +1,5 @@
 # Regroupe ici toutes les constantes utilisees
 tailleCase = 32
-nombreCasesLargeur = 25
-nombreCasesHauteur = 20
 tailleBord = 3
 couleurBlanche = (255, 255, 255)
 couleurRouge = (255, 0, 0)

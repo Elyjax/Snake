@@ -10,11 +10,15 @@ from pygame.locals import * # Quelques constantes utiles
 def options(fenetre):
 
     font1 = pygame.font.Font("Fonts/font1.ttf", 40)
-    font2 = pygame.font.Font("Fonts/font1.ttf", 80)
+    font2 = pygame.font.Font("Fonts/font1.ttf", 70)
     selectionActuelle = 0
+    largeurMin = 20
+    largeurMax= 30
+    hauteurMin = 10
+    hauteurMax = 20
     ouvert = True
     vitesses = ["Lente", "Normale", "Rapide", "Extreme"]
-    selections = ["Vitesse", "Musique", "Retour"]
+    selections = ["Vitesse", "Largeur", "Hauteur", "Musique", "Retour"]
 
     sauvegarde = Sauvegarde()
     try:
@@ -27,12 +31,13 @@ def options(fenetre):
             # Ferme l'application quand on clique sur la croix
             if event.type == QUIT:
                 exit()
+
             if event.type == KEYDOWN:
                 # Ferme aussi l'application quand on appui sur ESC
                 if event.key == K_ESCAPE:
                     ouvert = False
 
-		# Deplacement dans le menu avec les fleches directionnelle
+        		# Deplacement dans le menu avec les fleches directionnelle
                 if event.key == K_UP:
                     selectionActuelle -= 1
                     if selectionActuelle < 0:
@@ -43,8 +48,8 @@ def options(fenetre):
                     if selectionActuelle >= len(selections):
                         selectionActuelle = len(selections) - 1
 
-		# Modification de la vitesse
-		# 4 niveaux de vitesses differents
+		        # Modification de la vitesse
+		        # 4 niveaux de vitesses differents
                 if selections[selectionActuelle] == "Vitesse":
                     if event.key == K_LEFT:
                         sauvegarde.vitesse -= 1
@@ -56,11 +61,35 @@ def options(fenetre):
                         if sauvegarde.vitesse > 3:
                             sauvegarde.vitesse = 3
 
-		# Bascule de la musique entre On et Off
+                # Gestion du changement de la largeur
+                if selections[selectionActuelle] == "Largeur":
+                    if event.key == K_LEFT:
+                        sauvegarde.largeur -= 1
+                        if sauvegarde.largeur < largeurMin:
+                            sauvegarde.largeur = largeurMin
+
+                    if event.key == K_RIGHT:
+                        sauvegarde.largeur += 1
+                        if sauvegarde.largeur > largeurMax:
+                            sauvegarde.largeur = largeurMax
+
+                # Gestion du changement de la hauteur
+                if selections[selectionActuelle] == "Hauteur":
+                    if event.key == K_LEFT:
+                        sauvegarde.hauteur -= 1
+                        if sauvegarde.hauteur < hauteurMin:
+                            sauvegarde.hauteur = hauteurMin
+
+                    if event.key == K_RIGHT:
+                        sauvegarde.hauteur += 1
+                        if sauvegarde.hauteur > hauteurMax:
+                            sauvegarde.hauteur = hauteurMax
+
                 if event.key == K_RETURN:
                     if selections[selectionActuelle] == "Retour":
                         ouvert = False
 
+        		    # Bascule de la musique entre On et Off
                     if selections[selectionActuelle] == "Musique":
                         if sauvegarde.jouerMusique == "On":
                             sauvegarde.jouerMusique = "Off"
@@ -72,36 +101,43 @@ def options(fenetre):
         # On affiche le menu
         espacement = fenetre.get_rect().height / (len(selections) + 1)
         for i in range(0, len(selections)):
+            # On affiche d'abord l'option (Vitesse, Musique, etc)
+            # La police change de couleur et taille lorsqu'on selectionne l'option
             if i == selectionActuelle:
-                text = font2.render(selections[i], 1, couleurRouge)
+                option = font2.render(selections[i], 1, couleurRouge)
             else:
-                text = font1.render(selections[i], 1, couleurNoire)
-            position = text.get_rect()
+                option = font1.render(selections[i], 1, couleurNoire)
+
+            position = option.get_rect()
             position.centerx = fenetre.get_rect().centerx
             position.centery = espacement * (i + 1)
-            fenetre.blit(text, position)
+            fenetre.blit(option, position)
 
-            if selections[i] == "Vitesse" :
-                # Affichage de la vitesse
-		if i == selectionActuelle:
-	            textBis = font2.render(vitesses[sauvegarde.vitesse], 1, couleurRouge)
-		else:
-		    textBis = font1.render(vitesses[sauvegarde.vitesse], 1, couleurNoire)
-		positionBis = textBis.get_rect()
-		positionBis.centery = espacement * (i + 1)
-                positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2
-                fenetre.blit(textBis, positionBis)
+            # Puis on affiche sa valeur
+            if selections[i] == "Vitesse":
+                texte = vitesses[sauvegarde.vitesse]
+    
+            if selections[i] == "Largeur":
+                texte = str(sauvegarde.largeur)
 
-            if selections[i] == "Musique" :
-                # Affichage de l'option musique
-		if i == selectionActuelle:
-                    textBis = font2.render(sauvegarde.jouerMusique, 1, couleurRouge)
-                else:
-                    textBis = font1.render(sauvegarde.jouerMusique, 1, couleurNoire)
-		positionBis = textBis.get_rect()
-		positionBis.centery = espacement * (i + 1)
-                positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2
-                fenetre.blit(textBis, positionBis)
+            if selections[i] == "Hauteur":
+                texte = str(sauvegarde.hauteur)
+
+            if selections[i] == "Musique":
+                texte = sauvegarde.jouerMusique
+
+            if selections[i] == "Retour":
+                texte = ""
+
+            if i == selectionActuelle:
+                valeurOption = font2.render(texte, 1, couleurRouge)
+            else:
+                valeurOption = font1.render(texte, 1, couleurNoire)
+
+            positionBis = valeurOption.get_rect()
+            positionBis.centery = espacement * (i + 1)
+            positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2
+            fenetre.blit(valeurOption, positionBis)
 	
         pygame.display.flip()
 

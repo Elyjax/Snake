@@ -3,15 +3,22 @@ import pygame
 # La syntaxe from x import y permet de ne pas devoir ecrire x.y mais juste y
 # L'etoile indique que l'on importe tout
 from constantes import *
+from Sauvegarde import *
 from jouer import *
 from options import *
 
 pygame.init()
 
-# Ouvre une fenetre de tailleCase * nombreCasesLargeur
-#                  sur tailleCase * nombreCasesHauteur
-fenetre = pygame.display.set_mode((tailleCase * nombreCasesLargeur,
-    tailleCase * nombreCasesHauteur))
+sauvegarde = Sauvegarde()
+try:
+    sauvegarde = load(file("sauvegarde", "rb"))
+except IOError: # Si le fichier n'exsite pas, on le cree
+    dump(sauvegarde, file("sauvegarde", "wb"))
+
+# Ouvre une fenetre dont les dimensions dependent des options en hauteur et largeur
+fenetre = pygame.display.set_mode((tailleCase * (sauvegarde.largeur + 2 * tailleBord),
+                                    tailleCase * (sauvegarde.hauteur + 2 * tailleBord)))
+# On definit le titre de la fenetre
 pygame.display.set_caption("Snake")
 
 font1 = pygame.font.Font('Fonts/font1.ttf', 40)

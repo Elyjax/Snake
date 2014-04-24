@@ -7,10 +7,16 @@ from Musique import *
 from Sauvegarde import *
 
 def jouer(fenetre):
+    sauvegarde = Sauvegarde()
+    try:
+        sauvegarde = load(file("sauvegarde", "rb"))
+    except IOError: # Si le fichier n'exsite pas, on le cree
+        dump(sauvegarde, file("sauvegarde", "wb"))
+
     # Creation de l'objet de type Serpent
-    serpent = Serpent((tailleBord + 2) * tailleCase, (tailleBord + 2) * tailleCase)
+    serpent = Serpent(sauvegarde)
     # Creation de l'objet de type fruit
-    fruit = Fruit(serpent)
+    fruit = Fruit(serpent, sauvegarde)
     pygame.font.init()
 
     fontScore = pygame.font.Font("Fonts/font2.ttf", 20)
@@ -25,17 +31,11 @@ def jouer(fenetre):
     table[K_DOWN] = "bas"
     table[K_LEFT] = "gauche"
 
-    sauvegarde = Sauvegarde()
-    try:
-        sauvegarde = load(file("sauvegarde", "rb"))
-    except IOError: # Si le fichier n'exsite pas, on le cree
-        dump(sauvegarde, file("sauvegarde", "wb"))
-
     #Creation de l'objet de type Musique
     musique = Musique()
     # On joue la musique si elle est activee dans les options
     if sauvegarde.jouerMusique == "On":
-        musique.MoteurMusique()
+        musique.jouer()
 
     # Chargement de l'image de fond
     fond = pygame.image.load("Images/Fond.png").convert()
@@ -50,15 +50,18 @@ def jouer(fenetre):
         for event in pygame.event.get(): # Gestion des evenements
             # Ferme l'application quand on clique sur la croix
             if event.type == QUIT:
-                musique.Stop()
+                musique.stop()
                 exit()
             if event.type == KEYDOWN:
                 # On met le jeu en pause lors de l'appuis sur ESC
                 if event.key == K_ESCAPE:
                     if pause:
                         pause = False
+                        musique.reprendre()
                     else:
                         pause = True
+                        musique.pause()
+                        # Affichage de la pause
                         textePause = fontPause.render("Pause", 1, couleurBlanche)
                         position = textePause.get_rect()
                         position.center = fenetre.get_rect().center
@@ -69,18 +72,18 @@ def jouer(fenetre):
                 toucheFleche = (K_UP, K_RIGHT, K_DOWN, K_LEFT)
                 if event.key in toucheFleche and pause == False:
                     # Teste si le changement c'est bien effectue
-                        if serpent.changerDirection(table[event.key]):
-                            serpent.miseAJour(fruit)
-                            compteur = 0
+                    if serpent.changerDirection(table[event.key]):
+                        serpent.miseAJour(fruit)
+                        compteur = 0
                 # L'appui sur une touche fleche change la direction du serpent et
                 # lance automatique une mise a jour
 
         if pause == False:
             # On ajoute le temps ecoule depuis la derniere mise jour a un compteur
             # On met a jour le serpent si compteur > delaisMiseAJour
-        # On selectionne delaisMiseAJour selon la vitesse du serpent
+            # On selectionne delaisMiseAJour selon la vitesse du serpent
             # Plus delaisMiseAJour est grand plus le serpent sera lent
-            delaisMiseAJour = [200, 100, 50, 25][sauvegarde.vitesse]
+            delaisMiseAJour = [150, 100, 75, 50][sauvegarde.vitesse]
             compteur += clock.tick()
             if compteur >= delaisMiseAJour:
                 serpent.miseAJour(fruit)
@@ -88,14 +91,14 @@ def jouer(fenetre):
 
             # Si le serpent rencontre un bord du niveau ou se rentre dedans, on quitte
             if serpent.testCollision():
-                musique.Stop()
+                musique.stop()
                 break
             # On efface l'ecran
             fenetre.fill(couleurBlanche)
 
             # On affiche le fond
-            for i in range(tailleBord, nombreCasesLargeur - tailleBord):
-                for j in range(tailleBord, nombreCasesHauteur - tailleBord):
+            for i in range(tailleBord, sauvegarde.largeur + tailleBord):
+                for j in range(tailleBord, sauvegarde.hauteur + tailleBord):
                     fenetre.blit(fond, (i * tailleCase, j * tailleCase))
 
             # Affichage du fruit

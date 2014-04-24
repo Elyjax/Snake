@@ -9,10 +9,11 @@ from Serpent import *
 
 
 class Fruit :
-    def __init__(self, serpent):
+    def __init__(self, serpent, sauvegarde):
         # Charge l'image du fruit et la convertie dans le bon format
         self.image = pygame.image.load("Images/Fruits.png").convert_alpha()
         self.serpent = serpent
+        self.sauvegarde = sauvegarde
         self.generer()
     
     def generer(self):
@@ -28,8 +29,8 @@ class Fruit :
         collisionCreation = True
         while collisionCreation == True:
             self.positionFruit = Position(
-                random.randint(tailleBord, nombreCasesLargeur - tailleBord - 1) * tailleCase,
-                random.randint(tailleBord, nombreCasesHauteur - tailleBord - 1) * tailleCase)
+                random.randint(tailleBord, self.sauvegarde.largeur - tailleBord - 1) * tailleCase,
+                random.randint(tailleBord, self.sauvegarde.hauteur - tailleBord - 1) * tailleCase)
             collisionCreation = False
             for corps in self.serpent.positionsCorps:
                 if self.positionFruit.x == corps.x and \

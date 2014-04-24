@@ -5,19 +5,23 @@ from Fruit import *
 import random
 
 class Serpent:
-    def __init__(self, x, y):
+    def __init__(self, sauvegarde):
         # Charge l'image du corps du serpent et la convertie dans le bon format
         self.imageCorps = pygame.image.load("Images/Corps.png").convert_alpha()
         # Charge l'image de la tete du serpent
         # Celle ci contient les quatres positions possibles de la tete
         self.imageTete = pygame.image.load("Images/Tetes.png").convert_alpha()
+        self.sauvegarde = sauvegarde
         self.positionsCorps = list()
-        self.positionsCorps.append(Position(x, y))
-        self.positionsCorps.append(Position(-tailleCase, -tailleCase))
+        # On ajoute la tete et un corps
+        self.positionsCorps.append(Position((tailleBord + 2) * tailleCase,
+                                            (tailleBord + 2) * tailleCase))
+        self.ajouterCorps(1)
         self.positionTete = self.positionsCorps[0]
         self.direction = "droite"
 
     def miseAJour(self, fruits):
+        # On deplace la tete puis on fait suivre tout le corps
         pos = Position(self.positionTete.x, self.positionTete.y)
         if self.direction == "droite":
             self.positionTete.x += tailleCase
@@ -32,6 +36,7 @@ class Serpent:
             corps.x = pos.x
             corps.y = pos.y
             pos = tmp
+
         self.testManger(fruits)
 
     def afficher(self, fenetre):
@@ -73,8 +78,10 @@ class Serpent:
         return True
 
     def malus(self):
+        # La tete devient la queue et vice versa
         self.positionsCorps.reverse()
         self.positionTete = self.positionsCorps[0]
+        # On adapte la direction de la tete
         tete = self.positionTete
         corps = self.positionsCorps[1]
         if tete.y > corps.y:
@@ -87,18 +94,21 @@ class Serpent:
             self.direction = "droite"
 
     def testCollision(self):
+        # On teste les collisions avec le corps
         for corps in self.positionsCorps[1 :]:
             if self.positionTete.x == corps.x and \
                self.positionTete.y == corps.y:
                 return True
-            if self.positionTete.x >= (nombreCasesLargeur - tailleBord) * tailleCase:
-                return True
-            if self.positionTete.y >= (nombreCasesHauteur - tailleBord) * tailleCase:
-                return True
-            if self.positionTete.x < tailleBord * tailleCase:
-                return True
-            if self.positionTete.y < tailleBord * tailleCase:
-                return True
+        # On teste les collisions avec les bords
+        if self.positionTete.x >= (self.sauvegarde.largeur + tailleBord) * tailleCase:
+            return True
+        if self.positionTete.y >= (self.sauvegarde.hauteur + tailleBord) * tailleCase:
+            return True
+        if self.positionTete.x < tailleBord * tailleCase:
+            return True
+        if self.positionTete.y < tailleBord * tailleCase:
+            return True
+        # Si on arrive ici, il n'y a pas de collision
         return False
 
     def ajouterCorps(self, nombreCorps):
@@ -117,4 +127,5 @@ class Serpent:
                 self.ajouterCorps(10)
             else:  # Sinon c'est la pomme
                 self.ajouterCorps(1)
+            # On genere un nouveau fruit
             fruit.generer()

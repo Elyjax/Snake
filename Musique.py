@@ -12,16 +12,16 @@ class Musique:
         self.canal = pygame.mixer.Channel(1)
         self.canal.set_volume(10.0)
         
-    def MoteurMusique(self):
+    def jouer(self):
         self.canal.play(self.musique, -1, 0, 0)
 
-    def Pause(self):
-        if self.canal.get_busy():
-            self.canal.Pause()
-        else:
-            self.canal.Unpause()
+    def pause(self):
+        pygame.mixer.pause()
 
-    def Stop(self):
+    def reprendre(self):
+        pygame.mixer.unpause()
+
+    def stop(self):
         self.canal.stop()
         
 
