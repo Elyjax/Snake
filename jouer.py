@@ -8,7 +8,7 @@ from Sauvegarde import *
 
 def jouer(fenetre):
     # Creation de l'objet de type Serpent
-    serpent = Serpent(64, 64)
+    serpent = Serpent((tailleBord + 2) * tailleCase, (tailleBord + 2) * tailleCase)
     # Creation de l'objet de type fruits
     fruits = list()
     fruits.append(Fruit(serpent))

@@ -13,7 +13,7 @@ class Serpent:
         self.imageTete = pygame.image.load("Images/Tetes.png").convert_alpha()
         self.positionsCorps = list()
         self.positionsCorps.append(Position(x, y))
-        self.positionsCorps.append(Position(-16,-16))
+        self.positionsCorps.append(Position(-tailleCase, -tailleCase))
         self.positionTete = self.positionsCorps[0]
         self.direction = "droite"
 
@@ -52,7 +52,7 @@ class Serpent:
 
         # Affichage de chaque element du corps
         for corps in self.positionsCorps[1 :]:
-            fenetre.blit(self.imageCorps, (corps.x, corps.y), (0, 0, 64, 64))
+            fenetre.blit(self.imageCorps, (corps.x, corps.y), (0, 0, tailleCase, tailleCase))
 
     def changerDirection(self, direction):
         # Si la nouvelle direction est egal a l'actuelle, on quitte
@@ -96,6 +96,7 @@ class Serpent:
             if self.positionTete.y >= (nombreCasesHauteur - tailleBord) * tailleCase:
                 return True
             if self.positionTete.x < tailleBord * tailleCase:
+		print("ok")
                 return True
             if self.positionTete.y < tailleBord * tailleCase:
                 return True
@@ -109,7 +110,7 @@ class Serpent:
                     self.malus()
                 if fruit.typeFruit == 2:
                     for i in range(0, 10):
-                        self.positionsCorps.append(Position(-16, -16))
+                        self.positionsCorps.append(Position(-tailleCase, -tailleCase))
                 fruits.pop(index)
                 fruits.append(Fruit(self))
-                self.positionsCorps.append(Position(-16, -16))
+                self.positionsCorps.append(Position(-tailleCase, -tailleCase))
