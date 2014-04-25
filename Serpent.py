@@ -20,7 +20,7 @@ class Serpent:
         self.positionTete = self.positionsCorps[0]
         self.direction = "droite"
 
-    def miseAJour(self, fruits):
+    def miseAJour(self, fruit):
         # On deplace la tete puis on fait suivre tout le corps
         pos = Position(self.positionTete.x, self.positionTete.y)
         if self.direction == "droite":
@@ -37,7 +37,7 @@ class Serpent:
             corps.y = pos.y
             pos = tmp
 
-        self.testManger(fruits)
+        self.testManger(fruit)
 
     def afficher(self, fenetre):
         # Affichage de la tete
