@@ -129,3 +129,4 @@ class Serpent:
                 self.ajouterCorps(1)
             # On genere un nouveau fruit
             fruit.generer()
+            

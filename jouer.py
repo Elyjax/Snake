@@ -122,6 +122,11 @@ def jouer(fenetre):
             # On actualise l'ecran
             pygame.display.flip()
 
+            # Moteur de la musique pour un potentiel changement de piste
+            musique.moteurMusique(len(serpent.positionsCorps),
+                                  sauvegarde.largeur,
+                                  sauvegarde.hauteur) 
+
     # Affichage de l'ecran de GameOver
     fenetre.fill(couleurBlanche)
     gameOver = fontGameOver.render("Game Over !", 1, couleurRouge)
@@ -135,6 +140,10 @@ def jouer(fenetre):
     position.centery = fen.height * 0.75
     fenetre.blit(score, position)
     pygame.display.flip()
+    #joue la musique de game over
+    sound = pygame.mixer.Sound(FILENAME_SOUND1)
+    sound.set_volume(1.0)
+    sound.play()
     # On fait une pause de 2s
     sleep(2)
     # On efface les evenements produits durant l'attente
