@@ -33,27 +33,23 @@ class Musique:
 
         changement = False # Sert a detecter un changement de musique
 
-        if pourcentage >= 50 and self.filename == FILENAME5:
+        # On adapte la piste audio en fonction du pourcentage
+        # Il y a 6 paliers differents
+        if pourcentage >= 30 and self.filename == FILENAME5:
             self.filename = FILENAME6
             changement = True
-            # Au dela de 75 pourcents on lance la derniere piste
-        elif pourcentage >= 35 and self.filename == FILENAME4:
+        elif pourcentage >= 25 and self.filename == FILENAME4:
             self.filename = FILENAME5
             changement = True
-            # Au dela de 50 pourcents on lance la cinquieme piste
-        elif pourcentage >= 25 and self.filename == FILENAME3:
+        elif pourcentage >= 20 and self.filename == FILENAME3:
             self.filename = FILENAME4
             changement = True
-            # Au dela de 35 pourcents on lance la quatrieme piste
-        elif pourcentage >= 15 and self.filename == FILENAME2:
+        elif pourcentage >= 10 and self.filename == FILENAME2:
             self.filename = FILENAME3
             changement = True
-            # Au dela de 25 pourcents on lance la troisieme piste
-        elif pourcentage >= 10 and self.filename == FILENAME1:
+        elif pourcentage >= 5 and self.filename == FILENAME1:
             self.filename = FILENAME2
             changement = True
-            # Au dela de 15 pourcents on lance la seconde piste
-
 
         if changement == True:
             # on recharge la nouvelle musique
@@ -64,6 +60,5 @@ class Musique:
         # Relance la musique si arrete
         if pygame.mixer.music.get_busy() == False:
             pygame.mixer.music.play()
-
 
 
