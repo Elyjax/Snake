@@ -116,7 +116,7 @@ def options(fenetre):
             # Puis on affiche sa valeur
             if selections[i] == "Vitesse":
                 texte = vitesses[sauvegarde.vitesse]
-    
+
             if selections[i] == "Largeur":
                 texte = str(sauvegarde.largeur)
 
@@ -138,8 +138,11 @@ def options(fenetre):
             positionBis.centery = espacement * (i + 1)
             positionBis.centerx = position.right + (fenetre.get_width() - position.right) / 2
             fenetre.blit(valeurOption, positionBis)
-	
+
         pygame.display.flip()
 
     # On sauvegarde les options
     dump(sauvegarde, file("sauvegarde", "wb"))
+
+    fenetre = pygame.display.set_mode((tailleCase * (sauvegarde.largeur + 2 * tailleBord),
+                                        tailleCase * (sauvegarde.hauteur + 2 * tailleBord)))
