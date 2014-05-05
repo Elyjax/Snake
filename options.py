@@ -13,9 +13,9 @@ def options(fenetre):
     font2 = pygame.font.Font("Fonts/font1.ttf", 70)
     selectionActuelle = 0
     largeurMin = 20
-    largeurMax= 30
+    largeurMax= 40
     hauteurMin = 10
-    hauteurMax = 20
+    hauteurMax = 25
     ouvert = True
     vitesses = ["Lente", "Normale", "Rapide", "Extreme"]
     selections = ["Vitesse", "Largeur", "Hauteur", "Musique", "Retour"]
