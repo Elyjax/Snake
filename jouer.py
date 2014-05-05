@@ -83,7 +83,7 @@ def jouer(fenetre):
             # On met a jour le serpent si compteur > delaisMiseAJour
             # On selectionne delaisMiseAJour selon la vitesse du serpent
             # Plus delaisMiseAJour est grand plus le serpent sera lent
-            delaisMiseAJour = [150, 100, 75, 50][sauvegarde.vitesse]
+            delaisMiseAJour = [175, 100, 75, 50][sauvegarde.vitesse]
             compteur += clock.tick()
             if compteur >= delaisMiseAJour:
                 serpent.miseAJour(fruit)
