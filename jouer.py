@@ -33,9 +33,6 @@ def jouer(fenetre):
 
     #Creation de l'objet de type Musique
     musique = Musique()
-    # On joue la musique si elle est activee dans les options
-    if sauvegarde.jouerMusique == "On":
-        musique.jouer()
 
     # Chargement de l'image de fond
     fond = pygame.image.load("Images/Fond.png").convert()
@@ -123,9 +120,10 @@ def jouer(fenetre):
             pygame.display.flip()
 
             # Moteur de la musique pour un potentiel changement de piste
-            musique.moteurMusique(len(serpent.positionsCorps),
-                                  sauvegarde.largeur,
-                                  sauvegarde.hauteur) 
+            if sauvegarde.jouerMusique == "On":
+                musique.moteurMusique(len(serpent.positionsCorps),
+                                      sauvegarde.largeur,
+                                      sauvegarde.hauteur) 
 
     # Affichage de l'ecran de GameOver
     fenetre.fill(couleurBlanche)

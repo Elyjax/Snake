@@ -44,10 +44,10 @@ class Musique:
         elif pourcentage >= 20 and self.filename == FILENAME3:
             self.filename = FILENAME4
             changement = True
-        elif pourcentage >= 10 and self.filename == FILENAME2:
+        elif pourcentage >= 15 and self.filename == FILENAME2:
             self.filename = FILENAME3
             changement = True
-        elif pourcentage >= 5 and self.filename == FILENAME1:
+        elif pourcentage >= 10 and self.filename == FILENAME1:
             self.filename = FILENAME2
             changement = True
 
